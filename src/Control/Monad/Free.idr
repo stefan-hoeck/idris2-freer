@@ -2,7 +2,7 @@ module Control.Monad.Free
 
 import Control.MonadRec
 import Data.Fuel
-import Data.TypeAligned
+import Data.TCQueue
 
 %default total
 
@@ -33,7 +33,7 @@ mutual
   ||| over `Free f`.
   public export
   0 Arrs : (f : Type -> Type) -> (a,b : Type) -> Type
-  Arrs f = TCatList (\x,y => x -> Free f y)
+  Arrs = TCQueue . Free
 
 ||| Converts a view to the corresponding free monad. O(1).
 export %inline
@@ -49,7 +49,7 @@ export
 toView : Free f a -> FreeView f a
 toView (MkFree v s) = case v of
   Pure val => case uncons s of
-    Empty    => Pure val
+    EmptyV   => Pure val
     (h :| t) => assert_total $ toView (concatF (h val) t)
 
   Bind x k => Bind x (\va => concatF (k va) s)
