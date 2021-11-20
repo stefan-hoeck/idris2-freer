@@ -1,4 +1,4 @@
-# idris2-freer : An efficient, stack-safe implementation of freer monads.
+# idris2-freer : An efficient, stack-safe implementation of freer monads
 
 This library provides a stack-safe implementation of a *freer* monad,
 implemented on to of an efficient type aligned sequence of
