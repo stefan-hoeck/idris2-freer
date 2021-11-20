@@ -48,7 +48,7 @@ snoc : TCatQueue arr a b -> arr b c -> TCatQueue arr a c
 snoc (TCQueue init last) y = TCQueue init (last :< y)
 
 ||| Applies an arrow morphism to change the arrow type
-||| of a type aligned queue.
+||| of a type aligned queue. O(n).
 public export
 mapK : (forall u,v . r1 u v -> r2 u v) -> TCatQueue r1 a b -> TCatQueue r2 a b
 mapK f (TCQueue init last) = TCQueue (mapK f init) (mapK f last)

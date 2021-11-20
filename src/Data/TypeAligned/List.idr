@@ -99,7 +99,7 @@ namespace TList
   snoc xs f = xs ++ [f]
 
   ||| Applies an arrow morphism to change the arrow type
-  ||| of a type aligned list.
+  ||| of a type aligned list. O(n).
   public export
   mapK : (forall u,v . r1 u v -> r2 u v) -> TList r1 a b -> TList r2 a b
   mapK f = go Lin
@@ -129,7 +129,7 @@ namespace TSnocList
   unsnoc (init :< last) = init :|< last
 
   ||| Applies an arrow morphism to change the arrow type
-  ||| of a type aligned SnocList.
+  ||| of a type aligned SnocList. O(n).
   public export
   mapK : (forall u,v . r1 u v -> r2 u v) -> TSnocList r1 a b -> TSnocList r2 a b
   mapK f = go Nil
