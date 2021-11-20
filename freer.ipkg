@@ -1,0 +1,20 @@
+package freer
+
+authors    = "stefan-hoeck"
+version    = 0.1.0
+readme     = "README.md"
+license    = "BSD-3 Clause"
+
+sourcedir  = "src"
+depends    = base    >= 0.4.0
+           , tailrec >= 0.1.0
+
+modules = Control.Monad.Free
+
+        , Data.TypeAligned
+        , Data.TypeAligned.CatList
+        , Data.TypeAligned.List
+        , Data.TypeAligned.Ops
+        , Data.TypeAligned.Queue
+        , Data.TypeAligned.Uncons
+        , Data.TypeAligned.Unsnoc
