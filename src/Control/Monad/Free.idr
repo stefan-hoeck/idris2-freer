@@ -16,10 +16,11 @@ mutual
   ||| storing sequences of bind operations in
   ||| an efficient type aligned catenable list.
   public export
-  record Free (f : Type -> Type) (a : Type) where
-    constructor MkFree
-    view : FreeView f t
-    arrs : Arrs f t a
+  data Free : (f : Type -> Type) -> (a : Type) -> Type where
+    MkFree :  {0 t : _}
+           -> (view : FreeView f t)
+           -> (arrs : Arrs f t a)
+           -> Free f a
 
   ||| A *view* on a free monad over functor `f`, describing
   ||| it either as a pure value, or a lifted value of
