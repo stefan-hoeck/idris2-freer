@@ -1,0 +1,4 @@
+[custom.all.freer]
+type   = "local"
+path   = "."
+ipkg   = "freer.ipkg"

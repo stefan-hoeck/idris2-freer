@@ -19,8 +19,7 @@ library, which is based on the article
 [Stack Safety for Free](functorial.com/stack-safety-for-free/index.pdf)
 and adapted to a language with a totality checker.
 
-The latest commit is daily tested to build against the current
-HEAD of the Idris compiler. Since Idris2 releases are happening
+Since Idris2 releases are happening
 rather infrequently at the moment, it is suggested to use
 a package manager like [pack](https://github.com/stefan-hoeck/idris2-pack)
 to install and maintain matching versions of the Idris compiler
