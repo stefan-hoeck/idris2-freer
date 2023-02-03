@@ -77,10 +77,10 @@ Monad (Free f) where
 
 public export
 MonadRec (Free f) where
-  tailRecM seed vst (Access rec) step = do
+  tailRecM seed (Access rec) vst step = do
     Cont s2 prf vst2 <- step seed vst
       | Done v => pure v
-    tailRecM s2 vst2 (rec s2 prf) step
+    tailRecM s2 (rec s2 prf) vst2 step
 
 ||| Lift an arbitrary functor into a free monad.
 export
