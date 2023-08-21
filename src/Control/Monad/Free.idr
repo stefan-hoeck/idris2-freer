@@ -11,30 +11,34 @@ public export
 I : Type -> Type
 I t = t
 
-mutual
-  ||| A stack safe free monad implementation
-  ||| storing sequences of bind operations in
-  ||| an efficient type aligned catenable list.
-  public export
-  data Free : (f : Type -> Type) -> (a : Type) -> Type where
-    MkFree :  {0 t : _}
-           -> (view : FreeView f t)
-           -> (arrs : Arrs f t a)
-           -> Free f a
+||| A stack safe free monad implementation
+||| storing sequences of bind operations in
+||| an efficient type aligned catenable list.
+public export
+data Free : (f : Type -> Type) -> (a : Type) -> Type
 
-  ||| A *view* on a free monad over functor `f`, describing
-  ||| it either as a pure value, or a lifted value of
-  ||| type `f a` followed by a bind operation.
-  public export
-  data FreeView : (f : Type -> Type) -> (a : Type) -> Type where
-    Pure : (val : a) -> FreeView f a
-    Bind : (f b) -> (b -> Free f a) -> FreeView f a
+||| A *view* on a free monad over functor `f`, describing
+||| it either as a pure value, or a lifted value of
+||| type `f a` followed by a bind operation.
+public export
+data FreeView : (f : Type -> Type) -> (a : Type) -> Type
 
-  ||| A type aligned sequence of bind operations
-  ||| over `Free f`.
-  public export
-  0 Arrs : (f : Type -> Type) -> (a,b : Type) -> Type
-  Arrs = TCQueue . Free
+||| A type aligned sequence of bind operations
+||| over `Free f`.
+public export
+0 Arrs : (f : Type -> Type) -> (a,b : Type) -> Type
+
+data Free where
+  MkFree :  {0 t : _}
+         -> (view : FreeView f t)
+         -> (arrs : Arrs f t a)
+         -> Free f a
+
+data FreeView where
+  Pure : (val : a) -> FreeView f a
+  Bind : (f b) -> (b -> Free f a) -> FreeView f a
+
+Arrs = TCQueue . Free
 
 ||| Converts a view to the corresponding free monad. O(1).
 export %inline
@@ -108,10 +112,11 @@ substFree k f = case toView f of
 ||| Unwraps a single layer of `f`, providing the continuation.
 ||| Amortized O(1).
 export
-resume' :  (forall b. f b -> (b -> Free f a) -> r)
-        -> (a -> r)
-        -> Free f a
-        -> r
+resume' :
+     (forall b. f b -> (b -> Free f a) -> r)
+  -> (a -> r)
+  -> Free f a
+  -> r
 resume' k j fr = case toView fr of
   Pure a   => j a
   Bind g i => k g i
@@ -147,8 +152,13 @@ run fr = case toView fr of
   Bind v f => run (assert_smaller fr $ f v)
 
 export
-runM : Functor m => MonadRec n =>
-       (m (Free m a) -> n (Free m a)) -> Free m a -> n a
+runM :
+     {auto _ : Functor m}
+  -> {auto _ : MonadRec n}
+  -> (m (Free m a)
+  -> n (Free m a))
+  -> Free m a
+  -> n a
 runM g free = assert_total $ trSized forever free $ \fu,fr => case fu of
   More x => case resume fr of
     Right va => pure (Done va)
