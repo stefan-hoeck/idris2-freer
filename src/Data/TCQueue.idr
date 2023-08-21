@@ -49,6 +49,8 @@ uncons : TCQueue f a b -> ViewL f a b
 uncons Empty               = EmptyV
 uncons (Filled $ Leaf g)   = g :| Empty
 uncons (Filled $ Node v w) = go v w
-  where go : Tree f a x -> Tree f x b -> ViewL f a b
-        go (Leaf g) w   = g :| Filled w
-        go (Node y z) w = go y (Node z w)
+
+  where
+    go : Tree f a x -> Tree f x b -> ViewL f a b
+    go (Leaf g) w   = g :| Filled w
+    go (Node y z) w = go y (Node z w)
