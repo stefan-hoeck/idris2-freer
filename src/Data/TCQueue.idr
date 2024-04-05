@@ -36,7 +36,7 @@ Empty    ++ w        = w
 v        ++ Empty    = v
 Filled v ++ Filled w = Filled (Node v w)
 
-infixr 5 :|
+export infixr 5 :|
 
 ||| Left-edge deconstruction
 public export
